@@ -3,6 +3,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <sstream>
+#include <iomanip>
 using namespace std;
 
 
@@ -25,10 +27,11 @@ int main(){
         infile >> dumb;
         // gets lat and lon
         infile >> lati >> longi;
-        //double numlat = stod(lati);
-        //double numlon = stod(longi);
-        tmp.lat = lati;
-        tmp.lon = longi;
+        double numlat = stod(lati);
+        double numlon = stod(longi);
+        tmp.lat = numlat;
+        tmp.lon = numlon;
+        //cout << "->" << setprecision(10) << numlat << endl; 
         // gets country name
         getline(infile, names);
         tmp.name = names;
@@ -41,7 +44,7 @@ int main(){
     Country a;
 
     for(int i = 0; i < vec.size(); i++){
-        cout << vec[i].name << " " << vec[i].lat << " " << vec[i].lon << endl;
+        cout << vec[i].name << " " << setprecision(10) << vec[i].lat << " " << setprecision(10) << vec[i].lon << endl;
     }
   
 

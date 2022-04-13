@@ -4,7 +4,7 @@ using namespace std;
 
 class Country{
     public:
-        string lat, lon;
+        double lat, lon;
         string name;
 };
 
