@@ -9,12 +9,14 @@
 using namespace std;
 long double toRadians(const long double degree);
 long double distance(long double lat1, long double long1, long double lat2, long double long2);
+bool find(vector<Country> vec, Country a);
+void printVec(vector<Country> a);
 
 int main(){
     ifstream infile;
     infile.open("country_list.txt");
     vector<Country> vec;
-   
+    vector<Country> guessed;
     if(!infile){
         cout << "File Failure" << endl;
     }
@@ -39,8 +41,6 @@ int main(){
         tmp.name = names;
          
         vec.push_back(tmp);
-        
-
     }
 
     Country a;
@@ -48,6 +48,7 @@ int main(){
     double sum = 0;
     double previous = closest;
     int index = 137;
+    guessed.push_back(vec[index]);
     string input = "";
     cout << "Welcome! The calulated best starting guess is Montenegro, enter that now. Enter the distance after each guess. To quit the program, type q then enter. Good luck!" << '\n';
     while(input != "q"){
@@ -56,11 +57,15 @@ int main(){
     int intput = stoi(input);
     for(int i = 0; i < vec.size(); i++){
        int dist =  abs(distance(vec[index].lat, vec[index].lon, vec[i].lat, vec[i].lon)) - intput;
-       if(dist < closest){
+       if((dist < closest) || (find(guessed, vec[i]))){
            closest = abs(dist);
            index = i;
+       }else{
+           cout << "Is this ever rejected" << endl;
        }
     }
+        guessed.push_back(vec[index]);
+        printVec(guessed);
         cout << "MATH = " << closest << endl;
         cout << "Next best guess is ... " << vec[index].name << endl;
         
@@ -107,4 +112,24 @@ long double distance(long double lat1, long double long1,
     ans = ans * R;
  
     return ans;
+}
+bool find(vector<Country> vec, Country a){
+    bool found = true;
+    for(int i = 0; i < vec.size(); i++){
+        string name1 = vec[i].name;
+        string name2 = a.name;
+        cout << " test -> "<< name1 << name2 << endl;
+        if(name1 == name2){
+            found = false;
+        }
+
+    }
+    //cout << "FOUND = " << found << endl;
+    return found;
+}
+void printVec(vector<Country> a){
+    for(int i = 0; i < a.size(); i++){
+        cout << a[i].name << " " << a[i].lat << " " << a[i].lon << endl;
+    }
+
 }
