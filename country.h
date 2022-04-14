@@ -8,3 +8,8 @@ class Country{
         string name;
 };
 
+class Stat{
+    public:
+    string name;
+    int distances;
+};
