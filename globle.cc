@@ -30,16 +30,14 @@ int main(){
         string names;
         string lati, longi;
         string dumb;
-        // skips acronym
+
         infile >> dumb;
-        // gets lat and lon
+
         infile >> lati >> longi;
         long double numlat = stod(lati);
         long double numlon = stod(longi);
         tmp.lat = numlat;
         tmp.lon = numlon;
-        //cout << "->" << setprecision(10) << numlat << endl; 
-        // gets country name
         getline(infile, names);
         tmp.name = names;
          
@@ -48,8 +46,9 @@ int main(){
 
     Country a;
     double sum = 0;
-    int index = 237;
+    int index = 137;
     string input = "";
+    // Thanks to David for the Somoa starting country suggestion. :)
     cout << "Welcome! The calulated best starting guess is Somoa, enter that now. Enter the distance after each guess. To quit the program, type q then enter. Good luck!" << '\n';
     cout << "Distance: ";
     cin >> input;
@@ -84,21 +83,20 @@ int main(){
     cout << "The next best guess is... " << vec[index].name << endl;
     int vecsize = vec.size() - 1;
     // could cause issues, if problem occurs later this could be it
-    vec[index].lat = 0;
-    vec[index].lon = 0;
+    // i think this is resetting the lat and lon and when the country doesnt get any closer then it moves and guess from there
+    // needs a fix, like the guessed vector but that never worked
+    vec[index].lat = -1000;
+    vec[index].lon = -1000;
     string input1;
     cout << "Distance: ";
     cin >> input1;
 
-    cout << input << " <---> " << input1 << endl;
+    
     if( input == input1){
-        cout << "PrevIndex " << prevIndex << endl;
         index = prevIndex;
-        cout << "Index " << index << endl;
-        printVec(vec);
-        cout << "HOST COUNTRY =" << vec[index].name << endl;
-        vec[index].lat = 0;
-        vec[index].lon = 0;
+        
+        vec[index].lat = -1000;
+        vec[index].lon = -1000;
     }
     input = input1;
     }
@@ -133,20 +131,6 @@ long double distance(long double lat1, long double long1,
  
     return ans;
 }
-bool find(vector<Country> &vec, Country a){
-    bool found = false;
-    for(int i = 0; i < vec.size(); i++){
-        string name1 = vec[i].name;
-        string name2 = a.name;
-        cout << " test -> "<< name1 << name2 << endl;
-        if(name1 == name2){
-            found = true;
-        }
-
-    }
-    //cout << "FOUND = " << found << endl;
-    return found;
-}
 void printVec(vector<Country> a){
     for(int i = 0; i < a.size(); i++){
         cout << a[i].name << " " << a[i].lat << " " << a[i].lon << endl;
@@ -166,22 +150,4 @@ void sortVecDis(vector<Stat> &a){
                 swap(a[j], a[j + 1]); 
     }
 
-}
-int findClosest(vector<Country> a, Country focal, int intput){
-    int closest = 1000000;
-    int index = 0;
-    vector<Stat> vec;
-    Stat newt;
-    for(int i = 0; i < a.size(); i++){
-        int dist = abs(intput - distance(a[i].lat, a[i].lon, focal.lat, focal.lon));
-        //cout << intput << " - " << dist << endl;
-        newt.name = a[i].name;
-        newt.distances = dist;
-        vec.push_back(newt);
-    }
-    
-    sortVecDis(vec);
-    //printVecDis(vec);
-    
-    return index;
 }
